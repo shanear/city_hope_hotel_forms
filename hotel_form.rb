@@ -10,7 +10,7 @@ class CityHopeHotelForm
 
   attr_accessor :date
 
-  def initialize(date = DateTime.now)
+  def initialize(date = Time.zone.now)
     @date = date
   end
 
