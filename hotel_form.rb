@@ -3,6 +3,8 @@ require 'csv'
 require 'active_support/all'
 require 'dropbox_api'
 
+Time.zone = "Pacific Time (US & Canada)"
+
 class CityHopeHotelForm
   RESIDENTS_CSV_PATH = "./tmp/residents.csv"
 
