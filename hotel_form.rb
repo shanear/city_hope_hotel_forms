@@ -37,7 +37,7 @@ class CityHopeHotelForm
   private
 
   def fetch_csv_file!
-    dropbox.download("/residents.csv") do |content|
+    dropbox.download("#{dropbox_base_path}residents.csv") do |content|
       f = File.new(RESIDENTS_CSV_PATH, "w")
       f.write(content)
       f.close 
@@ -46,12 +46,12 @@ class CityHopeHotelForm
 
   def upload_daily_log!(filename)
     content = IO.read("./tmp/#{filename}")
-    dropbox.upload("/daily-logs/#{filename}", content, mode: :overwrite)
+    dropbox.upload("#{dropbox_base_path}daily-logs/#{filename}", content, mode: :overwrite)
   end
 
   def upload_weekly_report!(filename)
     content = IO.read("./tmp/#{filename}")
-    dropbox.upload("/weekly-reports/#{filename}", content, mode: :overwrite)
+    dropbox.upload("#{dropbox_base_path}weekly-reports/#{filename}", content, mode: :overwrite)
   end
 
   def daily_log_filename
@@ -108,12 +108,15 @@ class CityHopeHotelForm
     @dropbox ||= DropboxApi::Client.new(ENV['DROPBOX_APP_KEY'])
   end
 
+  def dropbox_base_path
+    ENV['DROPBOX_FORMS_PATH']
+  end
+
   def pdftk
     @pdftk ||= PdfForms.new("/usr/local/bin/pdftk")
   end
 end
 
 form = CityHopeHotelForm.new
-
 form.generate_daily_log!
 form.generate_weekly_report!
